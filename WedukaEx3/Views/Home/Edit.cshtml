@@ -1,0 +1,84 @@
+﻿@model WedukaEx3.Models.Pessoa
+
+@{
+    ViewData["Title"] = "Edição";
+}
+
+<div class="container mt-5">
+    <h1>Editar Pessoa</h1>
+    <form method="post" asp-action="Edit">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="mb-3">
+            <label for="Nome" class="form-label">Nome:</label>
+            <input type="text" id="Nome" name="Nome" class="form-control" value="@Model.Nome" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Contatos:</label>
+            <table id="contatos-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Contatos != null && Model.Contatos.Any())
+                    {
+                        int index = 0;
+                        @foreach (var contato in Model.Contatos)
+                        {
+                            <tr>
+                                <td>
+                                    <select name="Contatos[@(index)].Tipo" class="form-select" required>
+                                        <option value="">Selecione</option>
+                                        @if (contato.Tipo == "Telefone")
+                                        {
+                                            <option value="Telefone" selected>Telefone</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Telefone">Telefone</option>
+                                        }
+                                        @if (contato.Tipo == "Email")
+                                        {
+                                            <option value="Email" selected>Email</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Email">Email</option>
+                                        }
+                                        @if (contato.Tipo == "WhatsApp")
+                                        {
+                                            <option value="WhatsApp" selected>WhatsApp</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="WhatsApp">WhatsApp</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="Contatos[@(index)].Valor" class="form-control" value="@contato.Valor" required>
+                                    <input type="hidden" name="Contatos[@(index)].Id" value="@contato.Id" />
+                                    <input type="hidden" name="Contatos[@(index)].PessoaId" value="@Model.Id" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove-contact">Remover</button>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center button-container mt-3">
+                <button type="button" id="add-contact" class="btn btn-secondary">Adicionar Contato</button>
+                <button type="submit" class="btn-save-weduka">Salvar</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="~/js/edit.js" asp-append-version="true"></script>                             
